@@ -11,22 +11,20 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-colors = {
-    'background': '#111111',
-    'text': '#7FDBFF'
-}
+colors = {'backgroundGrey': '#999999', 'textGreen': '#4DE1DC', 'textBlack' : '#000000', 'textPink': '#CA0AC1', 'textWhite': '#ffffff'}
 
-app.layout = html.Div(style={'backgroundColor': colors['background'], 'columnCount': 2}, children=[
+app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'columnCount': 2}, children={
 
     html.H1(
         children='Option Pricer ~~ Master 203 ~~ Yiping Gou & Valentin Descloitre & Belkis Azzez',
         style={
-            'textAlign': 'center',
-            'color': colors['text']
+            'textAlign': 'center', 'size': 15,
+            'color': colors['textGreen']
         }
     ),
 
-    html.Label('Option Strategy'),
+    html.Label(style={'Option Strategy'}),
+    html.Div(children='Option parameters', style={'textAlign': 'center', 'color': colors['textPink']}),
     dcc.RadioItems(
         id='optionStrategy',
         options=[
@@ -37,10 +35,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background'], 'columnCou
         ], value='Call'
     ),
 
-    html.Div(children='Option parameters',
-             style={'textAlign': 'center',
-                    'color': colors['text']
-                    }),
+    html.Div(children='Option parameters', style={'textAlign': 'center', 'color': colors['textGreen']}),
 
     html.Label('S0 Current underlying spot price'),
     dcc.Input(id='spot', type='float'),
@@ -59,7 +54,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background'], 'columnCou
 
     html.Div(children='Simulation parameters [Monte Carlo and Heston]',
              style={'textAlign': 'center',
-                    'color': colors['text']
+                    'color': colors['textWhite']
                     }),
 
     html.Label('Correlation'),
@@ -97,13 +92,13 @@ app.layout = html.Div(style={'backgroundColor': colors['background'], 'columnCou
     ),
 
     html.Button('Submit', id='button'),
-    html.Div(id='container-button-basic',
+    html.Div(id='output',
              children='Enter your parameters and press submit')
-])
+})
 
 
 @app.callback(
-    dash.dependencies.Output('container-button-basic', 'children'),
+    dash.dependencies.Output('output', 'children'),
     [dash.dependencies.Input('button', 'n_clicks')],
     [dash.dependencies.State('optionStrategy', 'value'),
      dash.dependencies.State('spot', 'value'),
