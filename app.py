@@ -15,28 +15,22 @@ colors = {
     'backgroundGrey': '#999999',
     'text': '#7FDBFF', 'textGreen': '#4DE1DC', 'textWhite': '#FFFFFF', 'textBlack': '#000000', 'textPink': '#F20788'}
 
-
 app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey']}, children=[
 
-    html.H1(
-
+    html.H2(
         children='Option Pricer ~~ Master 203',
-        style={
-            'textAlign': 'center',
-            'color': colors['textPink'],
-        }
+        style={'textAlign': 'center', 'color': colors['textPink']}
     ),
 
     html.H2(
         children='Yiping Gou & Valentin Descloitre & Belkis Azzez',
-        style={
-            'textAlign': 'center',
-            'color': colors['text']
-        }
-
+        style={'textAlign': 'center', 'color': colors['textPink']}
     ),
-    html.Div(style={'backgroundColor': colors['background'], 'columnCount': 2}, children=[
-        html.Label('Option Strategy'),
+
+    html.Div(style={'backgroundColor': colors['backgroundGrey'], 'columnCount': 2}, children=[
+
+        html.Label(children='Option Strategy', style={'color': colors['textPink']}),
+
         dcc.RadioItems(
             id='optionStrategy',
             options=[
@@ -49,9 +43,7 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey']}, child
         ),
 
         html.Div(children='Option parameters',
-                 style={'textAlign': 'center',
-                        'color': colors['text'],
-                        'width': '49%', 'display': 'inline-block'}),
+                 style={'color': colors['textPink'], 'width': '49%', 'display': 'inline-block'}),
 
         html.Label('S0 Current underlying spot price'),
         dcc.Input(id='spot', type='float'),
@@ -68,10 +60,7 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey']}, child
         html.Label('Volatility (%)'),
         dcc.Input(id='vol', type='float'),
 
-        html.Div(children='Simulation parameters [Monte Carlo and Heston]',
-                 style={'textAlign': 'center',
-                        'color': colors['text']
-                        }),
+        html.Div(children='Simulation parameters [Monte Carlo and Heston]', style={'color': colors['textPink']}),
 
         html.Label('Correlation'),
         dcc.Input(id='corr', type='float'),
@@ -103,14 +92,14 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey']}, child
             id='nbSims',
             min=1000,
             max=10000,
-            marks={i: '{} sims'.format(i) if i == 1 else str(i) for i in range(1000, 10000, 1000)},
+            marks={i: '{} sims'.format(i) if i == 1 else str(i) for i in range(1000, 10000, 2000)},
             value=1200,
         ),
 
         html.Button('Submit', id='button'),
         html.Div(id='container-button-basic',
                  children='Enter your parameters and press submit')
-        ])
+    ])
 ])
 
 
@@ -136,12 +125,41 @@ def Output(n_clicks, valueOptionStrategy, valueSpot, valueCallStrike, valuePutSt
            valueCorr, valueKappa, valueTheta, valueVolOfVol, valueNbCores, valueMaturity, valueNbSims):
     # TODO functions calculating the price
     # TODO how to output the price
-    return 'The input value was "{}" and the button has been clicked {} times'.format(
-        valueSpot,
-        valueCallStrike
+
+    global message
+    if ((n_clicks is None) or (valueOptionStrategy is None) or (valueSpot is None) or (valueRate is None) or (valueVol is None)
+        or (valueCorr is None) or (valueKappa is None) or (valueTheta is None) or (valueVolOfVol is None) or (valueNbCores is None)
+        or (valueMaturity is None) or (valueNbSims is None)):
+        message = 'Not enough inputs to price the option strategy' + valueNbSims
+    return message
+
+
+
+app.layout = html.Div([
+    dcc.Graph(id='graph',
+        config={
+            'showSendToCloud': True,
+            'plotlyServerURL': 'https://plot.ly'
+        }
     )
+])
+
+
+@app.callback(
+    dash.dependencies.Output('graph', 'figure'),
+    [dash.dependencies.Input('my-dropdown', 'value')])
+def update_output(value):
+    y_array_dict = {
+        'NYC': [4,2,3],
+        'MTL': [1, 2, 4],
+        'SF': [5, 3, 6]
+    }
+
+    return {'data': [{'type': 'scatter', 'y': y_array_dict[value]}], 'layout': {'title': value}}
+
+
+#The orginal return message 'The input value was "{}" and the button has been clicked {} times'.format(valueSpot, valueCallStrike)
 
 
 if __name__ == '__main__':
     app.run_server(debug=False)
-
