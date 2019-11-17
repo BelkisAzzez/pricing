@@ -123,16 +123,29 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'heigh
             ),
         ]),
 
-        html.Button('Submit', id='button', style={'textAlign': 'center', 'marginBottom': '200px'}),
+        html.Button('Submit', id='button', style={'textAlign': 'center', 'marginBottom': '200px',
+                                                  'background-color': '#FF5E5E'}),
         html.Div(id='container-button-basic',
-                 children='Enter your parameters and press submit', style={'height': '800px'})
-        ])
+                 children=[
+                            html.Div(id='container-message',
+                                    children=[
+                                    'Enter your parameters and press submit']),
+                            html.Div([
+                                    dcc.Graph(id='graph',
+                                    config={
+                                        'showSendToCloud': True,
+                                        'plotlyServerURL': 'https://plot.ly'
+                                    }, style={'background-color': colors['backgroundGrey'], 'marginRight': '1.5em',
+                                              'marginTop': '1.5em'})
+                            ])], style={'height': '800px'})
+    ])
 
 ])
 
 
 @app.callback(
-    dash.dependencies.Output('container-button-basic', 'children'),
+    [dash.dependencies.Output('container-message', 'children'),
+     dash.dependencies.Output('graph', 'figure')],
     [dash.dependencies.Input('button', 'n_clicks')],
     [dash.dependencies.State('optionStrategy', 'value'),
      dash.dependencies.State('spot', 'value'),
@@ -155,14 +168,21 @@ def Output(n_clicks, valueOptionStrategy, valueSpot, valueCallStrike, valuePutSt
     # TODO how to output the price
 
     global message
-    if ((n_clicks is None) or (valueOptionStrategy is None) or (valueSpot is None) or (valueRate is None) or (valueVol is None)
-        or (valueCorr is None) or (valueKappa is None) or (valueTheta is None) or (valueVolOfVol is None) or (valueNbCores is None)
-        or (valueMaturity is None) or (valueNbSims is None)):
-        message = 'Not enough inputs to price the option strategy' + valueNbSims
-    return message
+    if ((n_clicks is None) or (valueOptionStrategy is None) or (valueSpot is None) or (valueRate is None) or
+            (valueVol is None) or (valueCorr is None) or (valueKappa is None) or (valueTheta is None) or
+            (valueVolOfVol is None) or (valueNbCores is None) or (valueMaturity is None)):
+        return 'Not enough inputs to price the option strategy' + valueNbSims
+    price = 69.69
+    y_array_dict = {
+        'NYC': [4, 2, 3],
+        'MTL': [1, 2, 4],
+        'SF': [5, 3, 6]
+    }
+
+    return ['Your option strategy price is ' + str(price), {'data': [{'type': 'scatter', 'y': y_array_dict[1]}], 'layout': {'title': 1}}]
 
 
-
+'''
 app.layout = html.Div([
     dcc.Graph(id='graph',
         config={
@@ -188,6 +208,6 @@ def update_output(value):
 
 #The orginal return message 'The input value was "{}" and the button has been clicked {} times'.format(valueSpot, valueCallStrike)
 
-
+'''
 if __name__ == '__main__':
     app.run_server(debug=False)
