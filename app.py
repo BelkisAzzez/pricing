@@ -136,7 +136,8 @@ app.layout = html.Div(style={'backgroundColor': colors['background'], 'height': 
 @app.callback(
     [dash.dependencies.Output('container-message', 'children'),
      dash.dependencies.Output('graph', 'figure')],
-    [dash.dependencies.Input('button', 'n_clicks')],
+    [dash.dependencies.Input('button', 'n_clicks'),
+     dash.dependencies.Input('nbSims', 'value')],
     [dash.dependencies.State('optionStrategy', 'value'),
      dash.dependencies.State('spot', 'value'),
      dash.dependencies.State('callStrike', 'value'),
@@ -149,11 +150,9 @@ app.layout = html.Div(style={'backgroundColor': colors['background'], 'height': 
      dash.dependencies.State('volOfVol', 'value'),
      dash.dependencies.State('nbCores', 'value'),
      dash.dependencies.State('maturity', 'value'),
-     dash.dependencies.State('nbSims', 'value'),
-
      ])
-def Output(n_clicks, valueOptionStrategy, valueSpot, valueCallStrike, valuePutStrike, valueRate, valueVol,
-           valueCorr, valueKappa, valueTheta, valueVolOfVol, valueNbCores, valueMaturity, valueNbSims):
+def Output(n_clicks, valueNbSims, valueOptionStrategy, valueSpot, valueCallStrike, valuePutStrike, valueRate, valueVol,
+           valueCorr, valueKappa, valueTheta, valueVolOfVol, valueNbCores, valueMaturity):
 
     global message
     if ((n_clicks is None) or (valueOptionStrategy is None) or (valueSpot is None) or (valueRate is None) or
