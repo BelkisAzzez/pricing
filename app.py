@@ -11,20 +11,28 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-colors = {'backgroundGrey': '#999999', 'textGreen': '#4DE1DC', 'textBlack' : '#000000', 'textPink': '#CA0AC1', 'textWhite': '#ffffff'}
+colors = {
+    'backgroundGrey': '#999999',
+    'text': '#7FDBFF', 'textGreen': '#4DE1DC', 'textWhite': '#FFFFFF', 'textBlack': '#000000', 'textPink': '#F20788'}
 
-app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'columnCount': 2}, children={
+app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'columnCount': 2}, children=[
 
-    html.H1(
-        children='Option Pricer ~~ Master 203 ~~ Yiping Gou & Valentin Descloitre & Belkis Azzez',
+    html.H2(
+        children='Option Pricer ~~ Master 203',
         style={
-            'textAlign': 'center', 'size': 15,
-            'color': colors['textGreen']
+            'textAlign': 'center',
+            'color': colors['textPink'],
         }
     ),
 
-    html.Label(style={'Option Strategy'}),
-    html.Div(children='Option parameters', style={'textAlign': 'center', 'color': colors['textPink']}),
+    html.H3(children='''
+    Yiping Gou & Valentin Descloitre & Belkis Azzez
+''', style={
+            'textAlign': 'center',
+            'color': colors['textPink'],
+        }),
+
+    html.Label('Option Strategy'),
     dcc.RadioItems(
         id='optionStrategy',
         options=[
@@ -35,7 +43,10 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'colum
         ], value='Call'
     ),
 
-    html.Div(children='Option parameters', style={'textAlign': 'center', 'color': colors['textGreen']}),
+    html.Div(children='Option parameters',
+             style={'textAlign': 'center',
+                    'color': colors['text']
+                    }),
 
     html.Label('S0 Current underlying spot price'),
     dcc.Input(id='spot', type='float'),
@@ -54,7 +65,7 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'colum
 
     html.Div(children='Simulation parameters [Monte Carlo and Heston]',
              style={'textAlign': 'center',
-                    'color': colors['textWhite']
+                    'color': colors['text']
                     }),
 
     html.Label('Correlation'),
@@ -92,13 +103,13 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'colum
     ),
 
     html.Button('Submit', id='button'),
-    html.Div(id='output',
+    html.Div(id='container-button-basic',
              children='Enter your parameters and press submit')
-})
+])
 
 
 @app.callback(
-    dash.dependencies.Output('output', 'children'),
+    dash.dependencies.Output('container-button-basic', 'children'),
     [dash.dependencies.Input('button', 'n_clicks')],
     [dash.dependencies.State('optionStrategy', 'value'),
      dash.dependencies.State('spot', 'value'),
