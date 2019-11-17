@@ -10,15 +10,11 @@ import dash_html_components as html
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
 colors = {
-    'backgroundGrey': '#999999',
-    'text': '#7FDBFF', 'textGreen': '#4DE1DC', 'textWhite': '#FFFFFF', 'textBlack': '#000000', 'textPink': '#F20788'}
-
-
+    'backgroundGrey': '#021C1E',
+    'text': '#7FDBFF', 'textGreen': '#6FB989', 'textWhite': '#FFFFFF', 'textBlack': '#000000', 'textPink': '#2C7873'}
 
 app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'height': '500px'}, children=[
-
 
     html.H2(
         children='Option Pricer ~~ Master 203',
@@ -46,7 +42,7 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'heigh
         ),
 
 
-        html.H5(children='Option parameters', style={'textAlign': 'center', 'color': colors['text']}),
+        html.H5(children='Option parameters', style={'textAlign': 'center', 'color': colors['textPink']}),
 
         html.Div(style={'textAlign': 'center', 'columnCount': 2}, children=[
 
@@ -80,10 +76,8 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'heigh
                 dcc.Input(id='maturity', type='integer'),
             ]),
         ]),
-        html.H5(children='Simulation parameters [Monte Carlo and Heston]',
-                 style={'textAlign': 'center',
-                        'color': colors['text']
-                        }),
+        html.H5(children='Simulation parameters [Monte Carlo and Heston]', style={'textAlign': 'center',
+                                                                                  'color': colors['textPink']}),
         html.Div(style={'textAlign': 'center', 'columnCount': 2}, children=[
 
             html.Div(children=[
@@ -111,7 +105,7 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'heigh
             dcc.Input(id='nbCores', type='float'),
         ]),
 
-        html.Div(style={'textAlign': 'center', 'marginBottom': '1em', 'marginLeft': '1.5em', 'marginRight': '1.5em'},
+        html.Div(style={'textAlign': 'center', 'marginBottom': '1.5em', 'marginLeft': '1.5em', 'marginRight': '1.5em'},
                  children=[
             html.Label('Number of simulations'),
             dcc.Slider(
@@ -127,16 +121,12 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'heigh
                                                   'background-color': '#FF5E5E'}),
         html.Div(id='container-button-basic',
                  children=[
-                            html.Div(id='container-message',
-                                    children=[
-                                    'Enter your parameters and press submit']),
+                            html.H6(id='container-message', children=['Enter your parameters and press submit']),
                             html.Div([
                                     dcc.Graph(id='graph',
-                                    config={
-                                        'showSendToCloud': True,
-                                        'plotlyServerURL': 'https://plot.ly'
-                                    }, style={'background-color': colors['backgroundGrey'], 'marginRight': '1.5em',
-                                              'marginTop': '1.5em'})
+                                              config={'showSendToCloud': True, 'plotlyServerURL': 'https://plot.ly'},
+                                              style={'background-color': colors['backgroundGrey'],
+                                                     'marginRight': '1.5em', 'marginTop': '1.5em'})
                             ])], style={'height': '800px'})
     ])
 
@@ -175,39 +165,11 @@ def Output(n_clicks, valueOptionStrategy, valueSpot, valueCallStrike, valuePutSt
     price = 69.69
     y_array_dict = {
         'NYC': [4, 2, 3],
-        'MTL': [1, 2, 4],
-        'SF': [5, 3, 6]
     }
-
-    return ['Your option strategy price is ' + str(price), {'data': [{'type': 'scatter', 'y': y_array_dict[1]}], 'layout': {'title': 1}}]
-
-
-'''
-app.layout = html.Div([
-    dcc.Graph(id='graph',
-        config={
-            'showSendToCloud': True,
-            'plotlyServerURL': 'https://plot.ly'
-        }
-    )
-])
+    message = 'Your option strategy price is ' + str(price)
+    figure = {'data': [{'type': 'scatter', 'y': y_array_dict['NYC']}], 'layout': {'title': 'P&L of the option strategy'}}
+    return message, figure
 
 
-@app.callback(
-    dash.dependencies.Output('graph', 'figure'),
-    [dash.dependencies.Input('my-dropdown', 'value')])
-def update_output(value):
-    y_array_dict = {
-        'NYC': [4,2,3],
-        'MTL': [1, 2, 4],
-        'SF': [5, 3, 6]
-    }
-
-    return {'data': [{'type': 'scatter', 'y': y_array_dict[value]}], 'layout': {'title': value}}
-
-
-#The orginal return message 'The input value was "{}" and the button has been clicked {} times'.format(valueSpot, valueCallStrike)
-
-'''
 if __name__ == '__main__':
     app.run_server(debug=False)
