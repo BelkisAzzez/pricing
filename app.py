@@ -34,12 +34,13 @@ app.layout = html.Div(style={'backgroundColor': colors['background'], 'columnCou
             {'label': u'Put', 'value': 'Put'},
             {'label': 'Straddle', 'value': 'STRD'},  # buy put and call at same strike and maturity
             {'label': 'Strangle', 'value': 'STRN'}  # buy put and call at same maturity but different strike
-        ], value='Call'
+        ], value='Call',
+        style={'columnCount': 2}
     ),
 
     html.Div(children='Option parameters',
              style={'textAlign': 'center',
-                    'color': colors['text']
+                    'color': colors['text'],
                     }),
 
     html.Label('S0 Current underlying spot price'),
@@ -131,4 +132,4 @@ def Output(n_clicks, valueOptionStrategy, valueSpot, valueCallStrike, valuePutSt
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
