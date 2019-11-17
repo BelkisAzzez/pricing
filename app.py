@@ -15,9 +15,11 @@ colors = {
     'backgroundGrey': '#999999',
     'text': '#7FDBFF', 'textGreen': '#4DE1DC', 'textWhite': '#FFFFFF', 'textBlack': '#000000', 'textPink': '#F20788'}
 
-app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'columnCount': 2}, children=[
 
-    html.H2(
+app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey']}, children=[
+
+    html.H1(
+
         children='Option Pricer ~~ Master 203',
         style={
             'textAlign': 'center',
@@ -25,86 +27,90 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'colum
         }
     ),
 
-    html.H3(children='''
-    Yiping Gou & Valentin Descloitre & Belkis Azzez
-''', style={
+    html.H2(
+        children='Yiping Gou & Valentin Descloitre & Belkis Azzez',
+        style={
             'textAlign': 'center',
-            'color': colors['textPink'],
-        }),
+            'color': colors['text']
+        }
 
-    html.Label('Option Strategy'),
-    dcc.RadioItems(
-        id='optionStrategy',
-        options=[
-            {'label': 'Call', 'value': 'Call'},
-            {'label': u'Put', 'value': 'Put'},
-            {'label': 'Straddle', 'value': 'STRD'},  # buy put and call at same strike and maturity
-            {'label': 'Strangle', 'value': 'STRN'}  # buy put and call at same maturity but different strike
-        ], value='Call'
     ),
+    html.Div(style={'backgroundColor': colors['background'], 'columnCount': 2}, children=[
+        html.Label('Option Strategy'),
+        dcc.RadioItems(
+            id='optionStrategy',
+            options=[
+                {'label': 'Call', 'value': 'Call'},
+                {'label': u'Put', 'value': 'Put'},
+                {'label': 'Straddle', 'value': 'STRD'},  # buy put and call at same strike and maturity
+                {'label': 'Strangle', 'value': 'STRN'}  # buy put and call at same maturity but different strike
+            ], value='Call',
+            style={'columnCount': 2}
+        ),
 
-    html.Div(children='Option parameters',
-             style={'textAlign': 'center',
-                    'color': colors['text']
-                    }),
+        html.Div(children='Option parameters',
+                 style={'textAlign': 'center',
+                        'color': colors['text'],
+                        'width': '49%', 'display': 'inline-block'}),
 
-    html.Label('S0 Current underlying spot price'),
-    dcc.Input(id='spot', type='float'),
+        html.Label('S0 Current underlying spot price'),
+        dcc.Input(id='spot', type='float'),
 
-    html.Label('Call strike'),
-    dcc.Input(id='callStrike', type='float'),
+        html.Label('Call strike'),
+        dcc.Input(id='callStrike', type='float'),
 
-    html.Label('Put strike'),
-    dcc.Input(id='putStrike', type='float'),
+        html.Label('Put strike'),
+        dcc.Input(id='putStrike', type='float'),
 
-    html.Label('Risk-free interest rate (%)'),
-    dcc.Input(id='rate', type='float'),
+        html.Label('Risk-free interest rate (%)'),
+        dcc.Input(id='rate', type='float'),
 
-    html.Label('Volatility (%)'),
-    dcc.Input(id='vol', type='float'),
+        html.Label('Volatility (%)'),
+        dcc.Input(id='vol', type='float'),
 
-    html.Div(children='Simulation parameters [Monte Carlo and Heston]',
-             style={'textAlign': 'center',
-                    'color': colors['text']
-                    }),
+        html.Div(children='Simulation parameters [Monte Carlo and Heston]',
+                 style={'textAlign': 'center',
+                        'color': colors['text']
+                        }),
 
-    html.Label('Correlation'),
-    dcc.Input(id='corr', type='float'),
+        html.Label('Correlation'),
+        dcc.Input(id='corr', type='float'),
 
-    html.Label('Kappa'),
-    dcc.Input(id='kappa', type='float'),
+        html.Label('Kappa'),
+        dcc.Input(id='kappa', type='float'),
 
-    html.Label('Theta'),
-    dcc.Input(id='theta', type='float'),
+        html.Label('Theta'),
+        dcc.Input(id='theta', type='float'),
 
-    html.Label('Vol of Vol'),
-    dcc.Input(id='volOfVol', type='float'),
+        html.Label('Vol of Vol'),
+        dcc.Input(id='volOfVol', type='float'),
 
-    html.Label('Number of cores'),
-    dcc.Input(id='nbCores', type='float'),
+        html.Label('Number of cores'),
+        dcc.Input(id='nbCores', type='float'),
 
-    # maturity, nbsteps, nbpaths
-    html.Label('Maturity in days'),
-    dcc.Slider(
-        id='maturity',
-        min=0,
-        max=365,
-        marks={i: 'Label {}'.format(i) if i == 1 else str(i) for i in range(1, 365, 30)},
-        value=30,
-    ),
+        # maturity, nbsteps, nbpaths
+        html.Label('Maturity in days'),
+        dcc.Slider(
+            id='maturity',
+            min=0,
+            max=365,
+            marks={i: 'Label {}'.format(i) if i == 1 else str(i) for i in range(1, 365, 30)},
+            value=30,
+        ),
 
-    html.Label('Number of simulations'),
-    dcc.Slider(
-        id='nbSims',
-        min=1000,
-        max=10000,
-        marks={i: '{} sims'.format(i) if i == 1 else str(i) for i in range(1000, 10000, 1000)},
-        value=1200,
-    ),
+        html.Label('Number of simulations'),
+        dcc.Slider(
+            id='nbSims',
+            min=1000,
+            max=10000,
+            marks={i: '{} sims'.format(i) if i == 1 else str(i) for i in range(1000, 10000, 1000)},
+            value=1200,
+        ),
 
-    html.Button('Submit', id='button'),
-    html.Div(id='container-button-basic',
-             children='Enter your parameters and press submit')
+        html.Button('Submit', id='button'),
+        html.Div(id='container-button-basic',
+                 children='Enter your parameters and press submit')
+        ])
 ])
 
 
@@ -137,4 +143,5 @@ def Output(n_clicks, valueOptionStrategy, valueSpot, valueCallStrike, valuePutSt
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
+
