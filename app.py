@@ -12,25 +12,28 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 colors = {
-    'background': '#111111',
-    'text': '#7FDBFF'
-}
+    'backgroundGrey': '#999999',
+    'text': '#7FDBFF', 'textGreen': '#4DE1DC', 'textWhite': '#FFFFFF', 'textBlack': '#000000', 'textPink': '#F20788'}
 
-app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
+
+app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey']}, children=[
 
     html.H1(
+
         children='Option Pricer ~~ Master 203',
         style={
             'textAlign': 'center',
-            'color': colors['text']
+            'color': colors['textPink'],
         }
     ),
+
     html.H2(
         children='Yiping Gou & Valentin Descloitre & Belkis Azzez',
         style={
             'textAlign': 'center',
             'color': colors['text']
         }
+
     ),
     html.Div(style={'backgroundColor': colors['background'], 'columnCount': 2}, children=[
         html.Label('Option Strategy'),
@@ -141,3 +144,4 @@ def Output(n_clicks, valueOptionStrategy, valueSpot, valueCallStrike, valuePutSt
 
 if __name__ == '__main__':
     app.run_server(debug=False)
+
