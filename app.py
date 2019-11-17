@@ -11,24 +11,24 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 colors = {
-    'backgroundGrey': '#021C1E',
-    'text': '#7FDBFF', 'textGreen': '#6FB989', 'textWhite': '#FFFFFF', 'textBlack': '#000000', 'textPink': '#2C7873'}
+    'background': '#021C1E',
+    'text': '#7FDBFF', 'textGreen': '#6FB989', 'textDark': '#2C7873'}
 
-app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'height': '500px'}, children=[
+app.layout = html.Div(style={'backgroundColor': colors['background'], 'height': '500px'}, children=[
 
     html.H2(
         children='Option Pricer ~~ Master 203',
-        style={'textAlign': 'center', 'color': colors['textPink']}
+        style={'textAlign': 'center', 'color': colors['textDark']}
     ),
 
     html.H2(
         children='Yiping Gou & Valentin Descloitre & Belkis Azzez',
-        style={'textAlign': 'center', 'color': colors['textPink']}
+        style={'textAlign': 'center', 'color': colors['textDark']}
     ),
 
-    html.Div(style={'textAlign': 'center', 'backgroundColor': colors['backgroundGrey'], 'columnCount': 2,
+    html.Div(style={'textAlign': 'center', 'backgroundColor': colors['background'], 'columnCount': 2,
                     }, children=[
-        html.H5(children='Option Strategy', style={'textAlign': 'center', 'color': colors['textPink']}),
+        html.H5(children='Option Strategy', style={'textAlign': 'center', 'color': colors['textDark']}),
 
         dcc.RadioItems(
             id='optionStrategy',
@@ -38,76 +38,76 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'heigh
                 {'label': 'Straddle', 'value': 'STRD'},  # buy put and call at same strike and maturity
                 {'label': 'Strangle', 'value': 'STRN'}  # buy put and call at same maturity but different strike
             ], value='Call',
-            style={'columnCount': 2}
+            style={'columnCount': 2, 'color': colors['textGreen']}
         ),
 
 
-        html.H5(children='Option parameters', style={'textAlign': 'center', 'color': colors['textPink']}),
+        html.H5(children='Option parameters', style={'textAlign': 'center', 'color': colors['textDark']}),
 
         html.Div(style={'textAlign': 'center', 'columnCount': 2}, children=[
 
             html.Div(children=[
-                html.Label('S0 Current underlying spot price'),
+                html.Label(children='S0 Current underlying spot price', style={'color': colors['textGreen']}),
                 dcc.Input(id='spot', type='float'),
             ]),
 
             html.Div(children=[
-                html.Label('Call strike'),
+                html.Label(children='Call strike', style={'color': colors['textGreen']}),
                 dcc.Input(id='callStrike', type='float'),
             ]),
 
             html.Div(children=[
-                html.Label('Put strike'),
+                html.Label(children='Put strike', style={'color': colors['textGreen']}),
                 dcc.Input(id='putStrike', type='float'),
             ]),
 
             html.Div(children=[
-                html.Label('Risk-free interest rate (%)'),
+                html.Label(children='Risk-free interest rate (%)', style={'color': colors['textGreen']}),
                 dcc.Input(id='rate', type='float'),
             ]),
 
             html.Div(children=[
-                    html.Label('Volatility (%)'),
+                    html.Label(children='Volatility (%)', style={'color': colors['textGreen']}),
                     dcc.Input(id='vol', type='float'),
             ]),
 
             html.Div(children=[
-                html.Label('Maturity in days'),
+                html.Label(children='Maturity in days', style={'color': colors['textGreen']}),
                 dcc.Input(id='maturity', type='integer'),
             ]),
         ]),
         html.H5(children='Simulation parameters [Monte Carlo and Heston]', style={'textAlign': 'center',
-                                                                                  'color': colors['textPink']}),
+                                                                                  'color': colors['textDark']}),
         html.Div(style={'textAlign': 'center', 'columnCount': 2}, children=[
 
             html.Div(children=[
-                html.Label('Correlation'),
+                html.Label(children='Correlation', style={'color': colors['textGreen']}),
                 dcc.Input(id='corr', type='float'),
             ]),
 
             html.Div(children=[
-                html.Label('Kappa'),
+                html.Label(children='Kappa', style={'color': colors['textGreen']}),
                 dcc.Input(id='kappa', type='float'),
             ]),
 
             html.Div(children=[
-                html.Label('Theta'),
+                html.Label(children='Theta', style={'color': colors['textGreen']}),
                 dcc.Input(id='theta', type='float'),
             ]),
 
             html.Div(children=[
-                html.Label('Vol of Vol'),
+                html.Label(children='Vol of Vol', style={'color': colors['textGreen']}),
                 dcc.Input(id='volOfVol', type='float'),
             ]),
         ]),
         html.Div(style={'textAlign': 'center', 'marginBottom': '1em'}, children=[
-            html.Label('Number of cores'),
+            html.Label(children='Number of cores', style={'color': colors['textGreen']}),
             dcc.Input(id='nbCores', type='float'),
         ]),
 
         html.Div(style={'textAlign': 'center', 'marginBottom': '1.5em', 'marginLeft': '1.5em', 'marginRight': '1.5em'},
                  children=[
-            html.Label('Number of simulations'),
+            html.Label(children='Number of simulations', style={'color': colors['textGreen']}),
             dcc.Slider(
                 id='nbSims',
                 min=1000,
@@ -118,14 +118,14 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'heigh
         ]),
 
         html.Button('Submit', id='button', style={'textAlign': 'center', 'marginBottom': '200px',
-                                                  'background-color': '#FF5E5E'}),
+                                                  'background-color': '#FFFFFF'}),
         html.Div(id='container-button-basic',
                  children=[
-                            html.H6(id='container-message', children=['Enter your parameters and press submit']),
+                            html.H6(id='container-message', children=['Enter your parameters and press submit'], style={'color': colors['textGreen']}),
                             html.Div([
                                     dcc.Graph(id='graph',
                                               config={'showSendToCloud': True, 'plotlyServerURL': 'https://plot.ly'},
-                                              style={'background-color': colors['backgroundGrey'],
+                                              style={'background-color': colors['background'],
                                                      'marginRight': '1.5em', 'marginTop': '1.5em'})
                             ])], style={'height': '800px'})
     ])
@@ -154,20 +154,19 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'heigh
      ])
 def Output(n_clicks, valueOptionStrategy, valueSpot, valueCallStrike, valuePutStrike, valueRate, valueVol,
            valueCorr, valueKappa, valueTheta, valueVolOfVol, valueNbCores, valueMaturity, valueNbSims):
-    # TODO functions calculating the price
-    # TODO how to output the price
 
     global message
     if ((n_clicks is None) or (valueOptionStrategy is None) or (valueSpot is None) or (valueRate is None) or
             (valueVol is None) or (valueCorr is None) or (valueKappa is None) or (valueTheta is None) or
             (valueVolOfVol is None) or (valueNbCores is None) or (valueMaturity is None)):
         return 'Not enough inputs to price the option strategy' + valueNbSims
-    price = 69.69
+    price = 69.69 #TODO ici j'appelle la fonction qui calcule le price
     y_array_dict = {
-        'NYC': [4, 2, 3],
+        'P&L': [4, 2, 3],
     }
+    #y_array_dict ['P&L'] = #TODO ici j'appelle la fonction qui retourne une liste de P&L en fonction du strike price
     message = 'Your option strategy price is ' + str(price)
-    figure = {'data': [{'type': 'scatter', 'y': y_array_dict['NYC']}], 'layout': {'title': 'P&L of the option strategy'}}
+    figure = {'data': [{'type': 'scatter', 'y': y_array_dict['P&L']}], 'layout': {'title': 'P&L of the option strategy'}}
     return message, figure
 
 
