@@ -16,28 +16,24 @@ colors = {
     'text': '#7FDBFF', 'textGreen': '#4DE1DC', 'textWhite': '#FFFFFF', 'textBlack': '#000000', 'textPink': '#F20788'}
 
 
+
 app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'height': '500px'}, children=[
 
-    html.H1(
 
+    html.H2(
         children='Option Pricer ~~ Master 203',
-        style={
-            'textAlign': 'center',
-            'color': colors['textPink'],
-        }
+        style={'textAlign': 'center', 'color': colors['textPink']}
     ),
 
     html.H2(
         children='Yiping Gou & Valentin Descloitre & Belkis Azzez',
-        style={
-            'textAlign': 'center',
-            'color': colors['text']
-        }
-
+        style={'textAlign': 'center', 'color': colors['textPink']}
     ),
+
     html.Div(style={'textAlign': 'center', 'backgroundColor': colors['backgroundGrey'], 'columnCount': 2,
                     }, children=[
-        html.H5(children='Option Strategy', style={'textAlign': 'center', 'color': colors['text']}),
+        html.H5(children='Option Strategy', style={'textAlign': 'center', 'color': colors['textPink']}),
+
         dcc.RadioItems(
             id='optionStrategy',
             options=[
@@ -48,6 +44,7 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'heigh
             ], value='Call',
             style={'columnCount': 2}
         ),
+
 
         html.H5(children='Option parameters', style={'textAlign': 'center', 'color': colors['text']}),
 
@@ -130,6 +127,7 @@ app.layout = html.Div(style={'backgroundColor': colors['backgroundGrey'], 'heigh
         html.Div(id='container-button-basic',
                  children='Enter your parameters and press submit', style={'height': '800px'})
         ])
+
 ])
 
 
@@ -155,12 +153,41 @@ def Output(n_clicks, valueOptionStrategy, valueSpot, valueCallStrike, valuePutSt
            valueCorr, valueKappa, valueTheta, valueVolOfVol, valueNbCores, valueMaturity, valueNbSims):
     # TODO functions calculating the price
     # TODO how to output the price
-    return 'The input value was "{}" and the button has been clicked {} times'.format(
-        valueSpot,
-        valueCallStrike
+
+    global message
+    if ((n_clicks is None) or (valueOptionStrategy is None) or (valueSpot is None) or (valueRate is None) or (valueVol is None)
+        or (valueCorr is None) or (valueKappa is None) or (valueTheta is None) or (valueVolOfVol is None) or (valueNbCores is None)
+        or (valueMaturity is None) or (valueNbSims is None)):
+        message = 'Not enough inputs to price the option strategy' + valueNbSims
+    return message
+
+
+
+app.layout = html.Div([
+    dcc.Graph(id='graph',
+        config={
+            'showSendToCloud': True,
+            'plotlyServerURL': 'https://plot.ly'
+        }
     )
+])
+
+
+@app.callback(
+    dash.dependencies.Output('graph', 'figure'),
+    [dash.dependencies.Input('my-dropdown', 'value')])
+def update_output(value):
+    y_array_dict = {
+        'NYC': [4,2,3],
+        'MTL': [1, 2, 4],
+        'SF': [5, 3, 6]
+    }
+
+    return {'data': [{'type': 'scatter', 'y': y_array_dict[value]}], 'layout': {'title': value}}
+
+
+#The orginal return message 'The input value was "{}" and the button has been clicked {} times'.format(valueSpot, valueCallStrike)
 
 
 if __name__ == '__main__':
     app.run_server(debug=False)
-
