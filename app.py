@@ -166,6 +166,7 @@ def Output(n_clicks, valueOptionStrategy, valueSpot, valueCallStrike, valuePutSt
     y_array_dict = {
         'NYC': [4, 2, 3],
     }
+    y_array_dict['NYC'] = sdfdsfsdfdsf
     message = 'Your option strategy price is ' + str(price)
     figure = {'data': [{'type': 'scatter', 'y': y_array_dict['NYC']}], 'layout': {'title': 'P&L of the option strategy'}}
     return message, figure
